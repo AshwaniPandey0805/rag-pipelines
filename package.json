@@ -1,0 +1,35 @@
+{
+  "name": "rag",
+  "version": "1.0.0",
+  "description": "Rag piplines architure using typescript.",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "demo:phase1": "tsx 01-Data-Ingestion-Parsing/src/index.ts",
+    "demo:text-loader": "tsx 01-Data-Ingestion-Parsing/src/01-text-loader.ts",
+    "demo:dir-loader": "tsx 01-Data-Ingestion-Parsing/src/02-directory-loader.ts",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AshwaniPandey0805/rag-pipelines.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AshwaniPandey0805/rag-pipelines/issues"
+  },
+  "homepage": "https://github.com/AshwaniPandey0805/rag-pipelines#readme",
+  "dependencies": {
+    "@langchain/classic": "^1.0.48",
+    "@langchain/community": "^1.1.29",
+    "@langchain/core": "^1.2.12",
+    "langchain": "^1.5.12"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}

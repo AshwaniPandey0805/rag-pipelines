@@ -1,0 +1,8 @@
+RAG Architecture Components
+===========================
+1. Data Ingestion & Extraction
+2. Text Chunking & Splitting
+3. Embedding Generation
+4. Vector Storage & Indexing
+5. Retrieval & Context Assembly
+6. Generation with LLM

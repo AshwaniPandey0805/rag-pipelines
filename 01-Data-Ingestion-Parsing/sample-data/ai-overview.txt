@@ -1,0 +1,9 @@
+Artificial Intelligence and Retrieval-Augmented Generation (RAG)
+------------------------------------------------------------------
+Retrieval-Augmented Generation (RAG) is a pattern that enhances Large Language Models (LLMs)
+by dynamically fetching relevant external context from a knowledge base before generating responses.
+
+Key benefits of RAG:
+1. Prevents hallucinations by grounding LLM responses in verifiable facts.
+2. Keeps knowledge up to date without costly retraining or fine-tuning.
+3. Provides source attribution and citations for auditability.
