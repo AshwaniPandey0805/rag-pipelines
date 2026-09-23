@@ -8,6 +8,7 @@
     "demo:phase1": "tsx 01-Data-Ingestion-Parsing/src/index.ts",
     "demo:text-loader": "tsx 01-Data-Ingestion-Parsing/src/01-text-loader.ts",
     "demo:dir-loader": "tsx 01-Data-Ingestion-Parsing/src/02-directory-loader.ts",
+    "demo:pdf-loader": "tsx 01-Data-Ingestion-Parsing/src/03-pdf-loader.ts",
     "demo:phase2": "tsx 02-Text-Splitting/src/index.ts",
     "demo:character-splitter": "tsx 02-Text-Splitting/src/01-character-splitter.ts",
     "demo:recursive-splitter": "tsx 02-Text-Splitting/src/02-recursive-character-splitter.ts",
@@ -30,10 +31,12 @@
     "@langchain/community": "^1.1.29",
     "@langchain/core": "^1.2.12",
     "@langchain/textsplitters": "^1.0.1",
-    "langchain": "^1.5.12"
+    "langchain": "^1.5.12",
+    "pdf-parse": "^2.4.5"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",
+    "@types/pdf-parse": "^1.1.5",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }

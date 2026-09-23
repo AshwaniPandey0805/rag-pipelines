@@ -13,50 +13,61 @@ Data ingestion is the first and most critical stage of any RAG pipeline. It brid
 | `@langchain/core` | Dependency | Fundamental interfaces (`Document`, `BaseDocumentLoader`, metadata definitions). |
 | `@langchain/classic` | Dependency | Classical filesystem loaders (`TextLoader`, `DirectoryLoader`). |
 | `@langchain/community` | Dependency | Extended community-maintained loaders (PDF, CSV, HTML, Notion, etc.). |
+| `pdf-parse` | Dependency | Node.js PDF parsing engine powering `PDFLoader` in JavaScript. |
+| `@types/pdf-parse` | DevDependency | TypeScript type definitions for `pdf-parse`. |
 | `typescript` | DevDependency | TypeScript compiler for type safety. |
 | `@types/node` | DevDependency | Node.js type definitions. |
 | `tsx` | DevDependency | TypeScript runner used for fast execution without separate compile steps. |
 
 ### Installation Command
 ```bash
-npm install langchain @langchain/core @langchain/classic @langchain/community
-npm install -D typescript @types/node tsx
+npm install langchain @langchain/core @langchain/classic @langchain/community pdf-parse
+npm install -D typescript @types/node tsx @types/pdf-parse
 ```
 
 ---
 
-## 3. Core Concepts
+## 3. Python vs. JavaScript PDF Parsers
 
-### 3.1 LangChain `Document` Interface
+| Feature | Python Equivalent | JavaScript / Node.js Equivalent | Engine Under the Hood |
+| :--- | :--- | :--- | :--- |
+| **Standard Page-by-Page** | `PyPDFLoader` | **`PDFLoader`** (`@langchain/community/document_loaders/fs/pdf`) | `pdf-parse` / Mozilla `pdf.js` |
+| **High Performance / Layout** | `PyMuPDFLoader` (`fitz`) | `pdfjs-dist` or `mupdf` (WebAssembly) | C/C++ MuPDF or Mozilla PDF.js |
+| **Complex Multi-Modal / OCR** | `UnstructuredPDFLoader` | `UnstructuredLoader` (`@langchain/community`) | Unstructured API |
+
+---
+
+## 4. Core Loader Concepts
+
+### 4.1 LangChain `Document` Interface
 Every loader in LangChain produces an array of `Document` objects:
 ```typescript
 interface Document<Metadata extends Record<string, any> = Record<string, any>> {
   pageContent: string; // The extracted text
-  metadata: Metadata;  // Key-value metadata (e.g., source path, line numbers, file type)
+  metadata: Metadata;  // Key-value metadata (source, pageNumber, totalPages, etc.)
   id?: string;        // Optional unique document identifier
 }
 ```
 
-### 3.2 `TextLoader`
+### 4.2 `TextLoader`
 - **Import**: `@langchain/classic/document_loaders/fs/text`
-- **Role**: Ingests a single flat text file (`.txt`, `.md`, `.log`, code files).
-- **Execution Flow**:
-  1. Instantiated with a target file path: `new TextLoader(filePath)`.
-  2. Reads file content into memory.
-  3. Returns `Document[]` (with a single item) containing `pageContent` and `metadata: { source: filePath }`.
+- Ingests a single flat text file (`.txt`, `.md`, `.log`, code files).
+- Returns 1 `Document` with `metadata: { source: filePath }`.
 
-### 3.3 `DirectoryLoader`
+### 4.3 `DirectoryLoader`
 - **Import**: `@langchain/classic/document_loaders/fs/directory`
-- **Role**: Crawls a directory recursively or flat, dispatching files to loader factories based on their extension.
-- **Key Parameters**:
-  - `dirPath`: Target directory to traverse.
-  - `loaders`: A dictionary mapping extensions to loader factories, e.g. `{ ".txt": (path) => new TextLoader(path) }`.
-  - `recursive`: Boolean (default `true`) indicating if subdirectories are traversed.
-  - `unknown`: Action for unmatched file extensions (`"warn"` | `"error"` | `"ignore"`).
+- Crawls a directory recursively or flat, dispatching files to loader factories based on their extension.
+
+### 4.4 `PDFLoader`
+- **Import**: `@langchain/community/document_loaders/fs/pdf`
+- **Key Options**:
+  - `splitPages: true` *(Default & Best Practice for RAG)*: Returns an array of `Document` objects, **one per page**. Every page automatically retains its page number in `metadata.loc.pageNumber`!
+  - `splitPages: false`: Merges the entire PDF into a single large `Document`.
+- **RAG Chaining**: When you pass page-level documents into `RecursiveCharacterTextSplitter`, each resulting chunk automatically preserves the exact page number it came from!
 
 ---
 
-## 4. Code Structure
+## 5. Code Structure
 
 ```
 01-Data-Ingestion-Parsing/
@@ -69,14 +80,13 @@ interface Document<Metadata extends Record<string, any> = Record<string, any>> {
 └── src/
     ├── 01-text-loader.ts           # TextLoader implementation & walkthrough
     ├── 02-directory-loader.ts      # DirectoryLoader implementation & walkthrough
-    └── index.ts                    # Pipeline runner combining both loaders
+    ├── 03-pdf-loader.ts            # PDFLoader implementation with attention.pdf
+    └── index.ts                    # Pipeline runner combining loaders
 ```
 
 ---
 
-## 5. Running the Examples
-
-Execute the examples directly via npm scripts:
+## 6. Running the Examples
 
 ```bash
 # Run TextLoader demo
@@ -84,6 +94,9 @@ npm run demo:text-loader
 
 # Run DirectoryLoader demo
 npm run demo:dir-loader
+
+# Run PDFLoader demo with attention.pdf
+npm run demo:pdf-loader
 
 # Run the complete Phase 1 ingestion demo
 npm run demo:phase1
