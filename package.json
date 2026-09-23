@@ -9,6 +9,7 @@
     "demo:text-loader": "tsx 01-Data-Ingestion-Parsing/src/01-text-loader.ts",
     "demo:dir-loader": "tsx 01-Data-Ingestion-Parsing/src/02-directory-loader.ts",
     "demo:pdf-loader": "tsx 01-Data-Ingestion-Parsing/src/03-pdf-loader.ts",
+    "demo:smart-pdf": "tsx 01-Data-Ingestion-Parsing/src/04-smart-pdf-processor.ts",
     "demo:phase2": "tsx 02-Text-Splitting/src/index.ts",
     "demo:character-splitter": "tsx 02-Text-Splitting/src/01-character-splitter.ts",
     "demo:recursive-splitter": "tsx 02-Text-Splitting/src/02-recursive-character-splitter.ts",

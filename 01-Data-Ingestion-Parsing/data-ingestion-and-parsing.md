@@ -65,6 +65,13 @@ interface Document<Metadata extends Record<string, any> = Record<string, any>> {
   - `splitPages: false`: Merges the entire PDF into a single large `Document`.
 - **RAG Chaining**: When you pass page-level documents into `RecursiveCharacterTextSplitter`, each resulting chunk automatically preserves the exact page number it came from!
 
+### 4.5 Real-World PDF Parsing Challenges & `SmartPDFProcessor`
+Real-world PDFs pose unique challenges that degrade downstream retrieval quality:
+1. **Broken Ligatures**: Typographic ligatures like `ﬁ` (U+FB01) and `ﬂ` (U+FB02) appear as single unicode glyphs. Without normalization, searching for "efficient" will not match "eﬃcient".
+2. **Hyphenated Line Breaks**: Words split across lines (`trans-\nformer`) need to be rejoined into `transformer`.
+3. **Empty / Blank Pages**: Cover pages, blank divider sheets, or short disclaimers add noise to vector databases.
+4. **Metadata Enrichment**: Adding `page`, `totalPages`, `charCount`, `source`, and intra-page `chunkIndex` for precise citations.
+
 ---
 
 ## 5. Code Structure
@@ -80,7 +87,8 @@ interface Document<Metadata extends Record<string, any> = Record<string, any>> {
 └── src/
     ├── 01-text-loader.ts           # TextLoader implementation & walkthrough
     ├── 02-directory-loader.ts      # DirectoryLoader implementation & walkthrough
-    ├── 03-pdf-loader.ts            # PDFLoader implementation with attention.pdf
+    ├── 03-pdf-loader.ts            # Basic PDFLoader implementation with attention.pdf
+    ├── 04-smart-pdf-processor.ts   # Advanced SmartPDFProcessor with cleaning & metadata
     └── index.ts                    # Pipeline runner combining loaders
 ```
 
@@ -95,8 +103,11 @@ npm run demo:text-loader
 # Run DirectoryLoader demo
 npm run demo:dir-loader
 
-# Run PDFLoader demo with attention.pdf
+# Run basic PDFLoader demo with attention.pdf
 npm run demo:pdf-loader
+
+# Run advanced SmartPDFProcessor (ligature fixes, hyphen fixes, metadata enrichment)
+npm run demo:smart-pdf
 
 # Run the complete Phase 1 ingestion demo
 npm run demo:phase1
