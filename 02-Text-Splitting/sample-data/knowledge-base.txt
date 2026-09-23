@@ -1,0 +1,16 @@
+# Retrieval-Augmented Generation (RAG) Architecture and Design Principles
+
+Retrieval-Augmented Generation (RAG) bridges the gap between static model weights and dynamic, proprietary enterprise data. By combining a dense retriever with an autoregressive generator, RAG systems ground responses in factual, verifiable data sources.
+
+## Core Ingestion Challenges
+When raw documents are parsed into plain text, structural boundaries are often flattened. A high-quality chunking pipeline must preserve semantic coherence. If a chunk splits in the middle of a vital sentence or table row, the vector embedding becomes distorted, leading to poor retrieval recall.
+
+Chunking strategies depend directly on the downstream embedding model and vector search technique. For example, cosine similarity over dense vector spaces is highly sensitive to text length. If chunks vary wildly from 50 to 5,000 characters, their vector magnitudes and semantic density will deviate significantly.
+
+### Best Practices for Chunking
+1. Standardize chunk sizes based on the query complexity. Short queries (factoid search) benefit from 200-400 token chunks. Deep reasoning tasks benefit from 800-1200 token chunks.
+2. Maintain a 10% to 20% overlap between contiguous chunks. This prevents information cliffing where a fact starts in chunk A and concludes in chunk B.
+3. Keep metadata (document source, section title, page numbers) attached to every chunk.
+
+### Python and TypeScript Integration
+Modern RAG architectures utilize TypeScript for high-throughput API gateways and Python for heavy scientific computation. When designing token-based splitters, ensuring consistent token encoding (such as cl100k_base or o200k_base) across both runtimes is critical to avoid context window overflow errors.
