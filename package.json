@@ -18,6 +18,10 @@
     "demo:word-unstructured": "tsx 03-Word-Document-Processing/src/02-unstructured-docx-loader.ts",
     "demo:word-markdown": "tsx 03-Word-Document-Processing/src/03-markdown-docx-processor.ts",
     "demo:phase3-word": "tsx 03-Word-Document-Processing/src/index.ts",
+    "demo:csv-loader": "tsx 04-CSV-Excel-Processing/src/01-csv-loader.ts",
+    "demo:unstructured-csv": "tsx 04-CSV-Excel-Processing/src/02-unstructured-csv-loader.ts",
+    "demo:excel-loader": "tsx 04-CSV-Excel-Processing/src/03-excel-loader.ts",
+    "demo:phase4-tabular": "tsx 04-CSV-Excel-Processing/src/index.ts",
     "build": "tsc"
   },
   "repository": {
@@ -36,11 +40,14 @@
     "@langchain/community": "^1.1.29",
     "@langchain/core": "^1.2.12",
     "@langchain/textsplitters": "^1.0.1",
+    "d3-dsv": "^3.0.1",
     "langchain": "^1.5.12",
     "mammoth": "^1.12.3",
-    "pdf-parse": "^2.4.5"
+    "pdf-parse": "^2.4.5",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@types/d3-dsv": "^3.0.7",
     "@types/node": "^26.6.2",
     "@types/pdf-parse": "^1.1.5",
     "tsx": "^4.23.15",
