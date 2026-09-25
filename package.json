@@ -28,6 +28,9 @@
     "demo:generic-json": "tsx 05-JSON-Processing/src/04-generic-json-processor.ts",
     "demo:streaming-json": "tsx 05-JSON-Processing/src/05-streaming-json-processor.ts",
     "demo:phase5-json": "tsx 05-JSON-Processing/src/index.ts",
+    "demo:sql-query": "tsx 06-SQL-Data-Processing/src/01-sql-query-loader.ts",
+    "demo:sql-schema": "tsx 06-SQL-Data-Processing/src/02-schema-ddl-loader.ts",
+    "demo:phase6-sql": "tsx 06-SQL-Data-Processing/src/index.ts",
     "build": "tsc"
   },
   "repository": {
