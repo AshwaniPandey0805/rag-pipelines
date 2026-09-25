@@ -22,6 +22,12 @@
     "demo:unstructured-csv": "tsx 04-CSV-Excel-Processing/src/02-unstructured-csv-loader.ts",
     "demo:excel-loader": "tsx 04-CSV-Excel-Processing/src/03-excel-loader.ts",
     "demo:phase4-tabular": "tsx 04-CSV-Excel-Processing/src/index.ts",
+    "demo:json-loader": "tsx 05-JSON-Processing/src/01-json-loader.ts",
+    "demo:jsonl-loader": "tsx 05-JSON-Processing/src/02-json-lines-loader.ts",
+    "demo:entity-json": "tsx 05-JSON-Processing/src/03-entity-json-processor.ts",
+    "demo:generic-json": "tsx 05-JSON-Processing/src/04-generic-json-processor.ts",
+    "demo:streaming-json": "tsx 05-JSON-Processing/src/05-streaming-json-processor.ts",
+    "demo:phase5-json": "tsx 05-JSON-Processing/src/index.ts",
     "build": "tsc"
   },
   "repository": {

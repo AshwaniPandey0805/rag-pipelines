@@ -1,0 +1,3 @@
+{"id": 1, "name": "John Doe", "role": "Software Engineer", "department": "engineering", "salary": 120000}
+{"id": 2, "name": "Jane Smith", "role": "Data Scientist", "department": "data_science", "salary": 135000}
+{"id": 3, "name": "Mike Johnson", "role": "VP of Engineering", "department": "engineering", "salary": 180000}
