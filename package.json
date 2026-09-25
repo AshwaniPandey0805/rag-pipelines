@@ -14,6 +14,10 @@
     "demo:character-splitter": "tsx 02-Text-Splitting/src/01-character-splitter.ts",
     "demo:recursive-splitter": "tsx 02-Text-Splitting/src/02-recursive-character-splitter.ts",
     "demo:token-splitter": "tsx 02-Text-Splitting/src/03-token-splitter.ts",
+    "demo:word-docx": "tsx 03-Word-Document-Processing/src/01-docx-loader.ts",
+    "demo:word-unstructured": "tsx 03-Word-Document-Processing/src/02-unstructured-docx-loader.ts",
+    "demo:word-markdown": "tsx 03-Word-Document-Processing/src/03-markdown-docx-processor.ts",
+    "demo:phase3-word": "tsx 03-Word-Document-Processing/src/index.ts",
     "build": "tsc"
   },
   "repository": {
@@ -33,6 +37,7 @@
     "@langchain/core": "^1.2.12",
     "@langchain/textsplitters": "^1.0.1",
     "langchain": "^1.5.12",
+    "mammoth": "^1.12.3",
     "pdf-parse": "^2.4.5"
   },
   "devDependencies": {

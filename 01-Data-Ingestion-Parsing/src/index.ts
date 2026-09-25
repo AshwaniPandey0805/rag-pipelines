@@ -15,7 +15,7 @@ async function runDemo() {
   console.log("\n>>> Step 1: Ingesting a single file with TextLoader");
   const singleFilePath = path.resolve(__dirname, "../sample-data/ai-overview.txt");
   const singleFileDocs = await loadSingleTextFile(singleFilePath);
-  
+
   console.log(`Loaded ${singleFileDocs.length} document from "${path.basename(singleFilePath)}"`);
   console.log(`First 80 chars: "${singleFileDocs[0].pageContent.slice(0, 80).replace(/\n/g, " ")}..."`);
 
@@ -28,7 +28,7 @@ async function runDemo() {
   });
 
   console.log(`Total ingested documents: ${directoryDocs.length}`);
-  
+
   // Show metadata table for inspection
   console.log("\n Ingested Documents Registry:");
   const tableData = directoryDocs.map((doc, idx) => ({
