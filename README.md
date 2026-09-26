@@ -19,6 +19,12 @@ rag-pipelines/
 │   ├── proposal.docx                    # Sample Word document
 │   ├── structured-file/                 # Sample CSV & Excel workbooks
 │   └── json_files/                      # Sample hierarchical JSON data
+├── Vectore-Embbeding-Vectore-Database/
+│   ├── embedding-and-vector-database.md # Embeddings theory & mathematical metrics
+│   └── src/
+│       ├── 01-huggingface-embeddings.ts # embedQuery & embedDocuments with Hugging Face ONNX
+│       ├── 02-vector-similarity-math.ts # Cosine Similarity, Dot Product, Euclidean Distance
+│       └── index.ts                     # End-to-end semantic similarity ranking demo
 ├── package.json                         # Dependencies & demo execution scripts
 ├── tsconfig.json                        # NodeNext TypeScript configuration
 └── .gitignore
@@ -59,6 +65,11 @@ rag-pipelines/
 ### 6. [SQL Database & Schema Processing](file:///home/pandey/Desktop/Folders/RAG/Data-Ingestion-and-Parsing/06-SQL-Data-Processing/sql-data-processing.md)
 * **`SQLQueryLoader`**: Zero-dependency SQL row extraction via `node:sqlite`, separating text content from numerical/filter metadata.
 * **`DatabaseSchemaLoader`**: Extracts DDL, column types, and foreign key relationships as documents for Text-to-SQL AI agents.
+
+### 7. [Vector Embeddings and Similarity Math](file:///home/pandey/Desktop/Folders/RAG/Vectore-Embbeding-Vectore-Database/embedding-and-vector-database.md)
+* **`HuggingFaceTransformersEmbeddings`**: 100% local, offline embedding generation via `@huggingface/transformers` (ONNX) with zero API keys.
+* **`embedQuery(text)` vs. `embedDocuments(texts)`**: Query-time 1D vector generation vs. index-time 2D batch generation.
+* **Vector Distance Mathematics**: Deep-dive implementations of Cosine Similarity, Dot Product, and Euclidean Distance (L2) to rank semantic relevance.
 
 ---
 
@@ -102,3 +113,6 @@ npm install
 | **06. SQL** | `npm run demo:sql-query` | Executes SQL queries to Documents |
 | | `npm run demo:sql-schema` | Generates schema documentation for Text-to-SQL |
 | | `npm run demo:phase6-sql` | Full SQL RAG execution demo |
+| **07. Embeddings** | `npm run demo:hf-embeddings` | Runs Hugging Face embedQuery & embedDocuments |
+| | `npm run demo:similarity-math` | Demonstrates Cosine, Dot Product & Euclidean math |
+| | `npm run demo:phase-embedding` | End-to-end semantic similarity ranking |
