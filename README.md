@@ -24,6 +24,7 @@ rag-pipelines/
 │   └── src/
 │       ├── 01-huggingface-embeddings.ts # embedQuery & embedDocuments with Hugging Face ONNX
 │       ├── 02-vector-similarity-math.ts # Cosine Similarity, Dot Product, Euclidean Distance
+│       ├── 03-openai-embeddings.ts      # OpenAIEmbeddings with .env, embedQuery, embedDocuments & MRL
 │       └── index.ts                     # End-to-end semantic similarity ranking demo
 ├── package.json                         # Dependencies & demo execution scripts
 ├── tsconfig.json                        # NodeNext TypeScript configuration
@@ -68,6 +69,7 @@ rag-pipelines/
 
 ### 7. [Vector Embeddings and Similarity Math](file:///home/pandey/Desktop/Folders/RAG/Vectore-Embbeding-Vectore-Database/embedding-and-vector-database.md)
 * **`HuggingFaceTransformersEmbeddings`**: 100% local, offline embedding generation via `@huggingface/transformers` (ONNX) with zero API keys.
+* **`OpenAIEmbeddings`**: Production-standard cloud embeddings via `@langchain/openai` configured with `.env` (`OPENAI_API_KEY`, `OPENAI_EMBEDDING_MODEL`), featuring Matryoshka dimension shortening (`dimensions: 512`).
 * **`embedQuery(text)` vs. `embedDocuments(texts)`**: Query-time 1D vector generation vs. index-time 2D batch generation.
 * **Vector Distance Mathematics**: Deep-dive implementations of Cosine Similarity, Dot Product, and Euclidean Distance (L2) to rank semantic relevance.
 
@@ -115,4 +117,5 @@ npm install
 | | `npm run demo:phase6-sql` | Full SQL RAG execution demo |
 | **07. Embeddings** | `npm run demo:hf-embeddings` | Runs Hugging Face embedQuery & embedDocuments |
 | | `npm run demo:similarity-math` | Demonstrates Cosine, Dot Product & Euclidean math |
+| | `npm run demo:openai-embeddings` | Demonstrates OpenAIEmbeddings with .env & dimension reduction |
 | | `npm run demo:phase-embedding` | End-to-end semantic similarity ranking |

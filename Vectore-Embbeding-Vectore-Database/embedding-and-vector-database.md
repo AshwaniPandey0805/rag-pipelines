@@ -17,40 +17,90 @@ For example, `all-MiniLM-L6-v2` produces a **384-dimensional vector**:
 | Package Name | Type | Purpose |
 | :--- | :--- | :--- |
 | `@huggingface/transformers` | Dependency | Transformers.js engine enabling 100% local, offline ONNX execution of Hugging Face embedding models in Node.js (no Python or PyTorch needed). |
+| `@langchain/openai` | Dependency | Official LangChain integration for OpenAI models (`OpenAIEmbeddings`, `ChatOpenAI`). |
+| `dotenv` | Dependency | Loads environment variables from `.env` file into `process.env`. |
 | `@langchain/community` | Dependency | Contains `HuggingFaceTransformersEmbeddings`. |
 | `@langchain/core` | Dependency | Base `Embeddings` interface defining `embedQuery` and `embedDocuments`. |
 
 ### Installation Command
 ```bash
-npm install @huggingface/transformers @langchain/community @langchain/core
+npm install @langchain/openai dotenv @huggingface/transformers @langchain/community @langchain/core
 ```
 
 ---
 
-## 3. Python vs. JavaScript Equivalents
+## 3. Environment Variables Configuration (`.env`)
 
-| Concept / Method | Python (`langchain_huggingface`) | JavaScript / TypeScript (`@langchain/community`) |
-| :--- | :--- | :--- |
-| **Model Class** | `HuggingFaceEmbeddings(model_name="...")` | **`HuggingFaceTransformersEmbeddings({ model: "..." })`** |
-| **Embed Single Query** | `embeddings.embed_query("...")` | **`await embeddings.embedQuery("...")`** $\rightarrow$ returns `number[]` |
-| **Embed Multiple Docs**| `embeddings.embed_documents([...])` | **`await embeddings.embedDocuments([...])`** $\rightarrow$ returns `number[][]` |
-| **Default Model** | `sentence-transformers/all-MiniLM-L6-v2` | `Xenova/all-MiniLM-L6-v2` (384 dimensions) |
-| **Execution Engine** | PyTorch / sentence-transformers | ONNX Runtime via `@huggingface/transformers` |
+For cloud embedding providers like OpenAI, API keys and model configurations should be kept secure in a root `.env` file and loaded using `dotenv`.
+
+### `.env` File Setup
+Create `.env` in the repository root:
+```env
+# OpenAI API Credentials
+OPENAI_API_KEY=sk-proj-your_actual_api_key_here
+
+# OpenAI Embedding Model Selection
+# Options: text-embedding-3-small | text-embedding-3-large | text-embedding-ada-002
+OPENAI_EMBEDDING_MODEL=text-embedding-3-small
+```
+
+### Loading in TypeScript
+```typescript
+import "dotenv/config"; // Automatically reads root .env into process.env
+
+const apiKey = process.env.OPENAI_API_KEY;
+const model = process.env.OPENAI_EMBEDDING_MODEL || "text-embedding-3-small";
+```
 
 ---
 
-## 4. `embedQuery` vs. `embedDocuments`
+## 4. Python vs. JavaScript Equivalents
+
+| Concept / Method | Python (`langchain_openai` / `langchain_huggingface`) | JavaScript / TypeScript (`@langchain/openai` / `@langchain/community`) |
+| :--- | :--- | :--- |
+| **OpenAI Model Class** | `OpenAIEmbeddings(model="text-embedding-3-small")` | **`new OpenAIEmbeddings({ model: "text-embedding-3-small", apiKey: process.env.OPENAI_API_KEY })`** |
+| **HuggingFace Class** | `HuggingFaceEmbeddings(model_name="...")` | **`new HuggingFaceTransformersEmbeddings({ model: "..." })`** |
+| **Embed Single Query** | `embeddings.embed_query("...")` | **`await embeddings.embedQuery("...")`** $\rightarrow$ returns `number[]` |
+| **Embed Multiple Docs**| `embeddings.embed_documents([...])` | **`await embeddings.embedDocuments([...])`** $\rightarrow$ returns `number[][]` |
+| **Dimension Truncation**| `OpenAIEmbeddings(dimensions=512)` | **`new OpenAIEmbeddings({ dimensions: 512 })`** (MRL supported) |
+
+---
+
+## 5. OpenAI Embedding Models Comparison
+
+| Model | Dimensions | Context Window | Use Case | Cost per 1M tokens |
+| :--- | :--- | :--- | :--- | :--- |
+| **`text-embedding-3-small`** | **1,536** (can shorten to **512**) | 8,191 tokens | **Default & Recommended**: Outstanding performance, low latency, 5x cheaper than Ada-002. | ~$0.02 |
+| **`text-embedding-3-large`** | **3,072** (can shorten to **1024** or **256**) | 8,191 tokens | **Highest Accuracy**: Best for multi-lingual and domain-specific enterprise search. | ~$0.13 |
+| **`text-embedding-ada-002`** | 1,536 (fixed) | 8,191 tokens | **Legacy**: Older generation; lacks Matryoshka dimension truncation. | ~$0.10 |
+
+### 🚀 Production Tip: Matryoshka Representation Learning (MRL)
+The `text-embedding-3` family supports native **dimension reduction** without retraining or separate projection matrices:
+```typescript
+const compactEmbeddings = new OpenAIEmbeddings({
+  model: "text-embedding-3-small",
+  dimensions: 512, // Shortens from 1536 to 512!
+});
+```
+* **Benefits**:
+  1. Reduces vector database RAM and disk storage by **66%**.
+  2. Speeds up vector distance calculation (Cosine / Dot product) by **3x**.
+  3. Retains over **99% of retrieval accuracy** on MTEB benchmarks.
+
+---
+
+## 6. `embedQuery` vs. `embedDocuments`
 
 | Feature | `embedQuery(text)` | `embedDocuments(texts)` |
 | :--- | :--- | :--- |
 | **Input** | A single search query (`string`) | An array of document chunks (`string[]`) |
-| **Output** | Single vector: `number[]` (e.g., length 384) | Array of vectors: `number[][]` (e.g., $N \times 384$) |
+| **Output** | Single vector: `number[]` (e.g., length 1536 or 512) | Array of vectors: `number[][]` (e.g., $N \times 1536$) |
 | **When Used** | At **Runtime / Query Time** when a user asks a question | At **Index Time** when storing documents into a vector database |
-| **Batching** | Single execution | Batched in chunks (e.g., `batchSize: 32` or `512`) |
+| **Batching** | Single execution | Batched in chunks |
 
 ---
 
-## 5. Vector Distance & Similarity Metrics
+## 7. Vector Distance & Similarity Metrics
 
 Once vectors are generated, vector databases calculate closeness using mathematical distance metrics:
 
@@ -66,28 +116,32 @@ Once vectors are generated, vector databases calculate closeness using mathemati
 
 ---
 
-## 6. Code Structure
+## 8. Code Structure
 
 ```
 Vectore-Embbeding-Vectore-Database/
 ├── embedding-and-vector-database.md    # Concepts, tracking & comparisons
 └── src/
-    ├── 01-huggingface-embeddings.ts    # embedQuery & embedDocuments demonstration
+    ├── 01-huggingface-embeddings.ts    # 100% local ONNX embedding generation
     ├── 02-vector-similarity-math.ts    # Cosine similarity and ranking implementation
+    ├── 03-openai-embeddings.ts         # OpenAIEmbeddings with .env, embedQuery, embedDocuments & MRL
     └── index.ts                        # End-to-end semantic search runner
 ```
 
 ---
 
-## 7. Running the Demonstrations
+## 9. Running the Demonstrations
 
 ```bash
-# 1. Run Hugging Face Embeddings (embedQuery & embedDocuments)
+# 1. Run Hugging Face Local Embeddings (embedQuery & embedDocuments)
 npm run demo:hf-embeddings
 
 # 2. Run Vector Similarity Math & Ranking
 npm run demo:similarity-math
 
-# 3. Run complete Embedding Demo
+# 3. Run OpenAI Embeddings (.env API key required)
+npm run demo:openai-embeddings
+
+# 4. Run complete Embedding Demo
 npm run demo:phase-embedding
 ```

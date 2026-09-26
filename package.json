@@ -33,6 +33,7 @@
     "demo:phase6-sql": "tsx Data-Ingestion-and-Parsing/06-SQL-Data-Processing/src/index.ts",
     "demo:hf-embeddings": "tsx Vectore-Embbeding-Vectore-Database/src/01-huggingface-embeddings.ts",
     "demo:similarity-math": "tsx Vectore-Embbeding-Vectore-Database/src/02-vector-similarity-math.ts",
+    "demo:openai-embeddings": "tsx Vectore-Embbeding-Vectore-Database/src/03-openai-embeddings.ts",
     "demo:phase-embedding": "tsx Vectore-Embbeding-Vectore-Database/src/index.ts",
     "build": "tsc"
   },
@@ -52,8 +53,10 @@
     "@langchain/classic": "^1.0.48",
     "@langchain/community": "^1.1.29",
     "@langchain/core": "^1.2.12",
+    "@langchain/openai": "^1.5.13",
     "@langchain/textsplitters": "^1.0.1",
     "d3-dsv": "^3.0.1",
+    "dotenv": "^18.0.4",
     "langchain": "^1.5.12",
     "mammoth": "^1.12.3",
     "pdf-parse": "^2.4.5",

@@ -44,7 +44,7 @@ export class MarkdownDocxProcessor {
     console.log(`\n--- [MarkdownDocxProcessor] Converting: ${filePath} ---`);
 
     // 1. Convert Word document to Markdown using mammoth
-    const { value: markdownText, messages } = await mammoth.convertToMarkdown({
+    const { value: markdownText, messages } = await (mammoth as any).convertToMarkdown({
       path: filePath,
     });
 
